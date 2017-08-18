@@ -12,7 +12,9 @@ def collect_data():
     global prev_battery_percentage
     current_time = map(int, datetime.now().time().isoformat(timespec='seconds').split(':'))
     current_time = sum([x*y for x,y in zip(current_time, reversed([60**i for i in range(3)]))])
-    file_name = '-'.join(map(str, datetime.now().date().timetuple()[:3]))
+    file_name = map(str, datetime.now().date().timetuple()[:3])
+    file_name = map(lambda x: '0'+x if len(x) < 2 else x, file_name)
+    file_name = '-'.join(file_name)
 
     battery_info = Popen(['pmset', '-g', 'batt'], stdout=PIPE, stderr=STDOUT, encoding='utf8').communicate()[0]
     battery_percentage = battery_info.split('\n')[1].split('\t')[1]
